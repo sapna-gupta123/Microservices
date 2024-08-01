@@ -1,5 +1,7 @@
 
 using RestSharp;
+using WebApp.Services.ProductService;
+using WebApp.Services.ProductService.Dto;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,7 +9,11 @@ IHttpContextAccessor htpContextAccessor = new HttpContextAccessor();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddScoped<IProductService>(p =>
+{
+    return new ProductService(
+        new RestClient(builder.Configuration["MicroservicAddress:ApiGatewayForWeb:Uri"]), htpContextAccessor);
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
