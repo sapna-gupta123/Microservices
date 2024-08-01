@@ -1,4 +1,5 @@
-﻿using WebApp.Models;
+﻿using SharedService.Dto;
+using WebApp.Models;
 using WebApp.Services.ProductService.Dto;
 
 namespace WebApp.Services.ProductService

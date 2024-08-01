@@ -2,11 +2,12 @@
 using SharedService;
 using SharedService.Dto;
 using System.Text.Json;
-using WebApp.Services.ProductService.Dto;
+using WebApp.Models;
+using WebApp.Services.CategoryService.Dto;
 
-namespace WebApp.Services.ProductService
+namespace WebApp.Services.CategoryService
 {
-    public class ProductService : IProductService
+    public class CategoryService : ICategoryService
     {
         public string token = "";
         private readonly RestClient restClient;
@@ -14,7 +15,7 @@ namespace WebApp.Services.ProductService
         IHttpContextAccessor htpContextAccessor;
 
 
-        public ProductService(RestClient restClient, IHttpContextAccessor htpContextAccessor)
+        public CategoryService(RestClient restClient, IHttpContextAccessor htpContextAccessor)
         {
             this.restClient = restClient;
             this.htpContextAccessor = htpContextAccessor;
@@ -22,45 +23,45 @@ namespace WebApp.Services.ProductService
             token = htpContextAccessor.HttpContext.Request.Cookies["Auth"];
             UserID = TokenManagerService.GetUserInfo(token).UserID.ToString();
         }
-        public ResultDto CreateProductAsync(ProductDto productDto)
+        public ResultDto CreateCategoryAsync(CategoryDto categoryDto)
         {
-            var request = new RestRequest($"/api/Product", Method.POST);
+            var request = new RestRequest($"/api/Category", Method.POST);
             request.AddHeader("token", token);
             request.AddHeader("Content-Type", "application/json");
-            string serializeModel = JsonSerializer.Serialize(productDto);
+            string serializeModel = JsonSerializer.Serialize(categoryDto);
             request.AddParameter("application/json", serializeModel, ParameterType.RequestBody);
             var response = restClient.Execute(request);
             return Utilities.GetResponseStatusCode(response);
         }
 
-        public ResultDto DeleteProductAsync(Guid id)
+        public ResultDto DeleteCategoryAsync(Guid id)
         {
-            var request = new RestRequest($"/api/Product/DeleteCategory?id={id}", Method.DELETE);
+            var request = new RestRequest($"/api/Category/DeleteCategory?id={id}", Method.DELETE);
             request.AddHeader("token", token);
             IRestResponse response = restClient.Execute(request);
             return Utilities.GetResponseStatusCode(response);
         }
 
-        public IEnumerable<ProductDto> GetProductsAsync()
+        public IEnumerable<CategoryDto> GetCategoriesAsync()
         {
-            var request = new RestRequest($"/api/Product", Method.GET);
+            var request = new RestRequest($"/api/Category", Method.GET);
             request.AddHeader("token", token);
             IRestResponse response = restClient.Execute(request);
-            var basket = JsonSerializer.Deserialize<IEnumerable<ProductDto>>(response.Content);
+            var basket = JsonSerializer.Deserialize<IEnumerable<CategoryDto>>(response.Content);
             return basket;
         }
 
-        public ResultDto GetProductByIdAsync(Guid id)
+        public ResultDto GetCategoryByIdAsync(Guid id)
         {
-            var request = new RestRequest($"/api/Product/{id}", Method.PUT);
+            var request = new RestRequest($"/api/Category/{id}", Method.PUT);
             request.AddHeader("token", token);
             IRestResponse response = restClient.Execute(request);
             return Utilities.GetResponseStatusCode(response);
         }
 
-        public ResultDto UpdateProductAsync(ProductDto productDto)
+        public ResultDto UpdateCategoryAsync(CategoryDto categoryDto)
         {
-            var request = new RestRequest($"/api/Product", Method.PUT);
+            var request = new RestRequest($"/api/Category", Method.PUT);
             request.AddHeader("token", token);
             IRestResponse response = restClient.Execute(request);
             return Utilities.GetResponseStatusCode(response);

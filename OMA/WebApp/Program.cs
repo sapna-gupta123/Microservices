@@ -1,7 +1,8 @@
 
 using RestSharp;
+using WebApp.Services.CategoryService;
+using WebApp.Services.CompanyService;
 using WebApp.Services.ProductService;
-using WebApp.Services.ProductService.Dto;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,16 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IProductService>(p =>
 {
     return new ProductService(
+        new RestClient(builder.Configuration["MicroservicAddress:ApiGatewayForWeb:Uri"]), htpContextAccessor);
+});
+builder.Services.AddScoped<ICompanyService>(p =>
+{
+    return new CompanyService(
+        new RestClient(builder.Configuration["MicroservicAddress:ApiGatewayForWeb:Uri"]), htpContextAccessor);
+});
+builder.Services.AddScoped<ICategoryService>(p =>
+{
+    return new CategoryService(
         new RestClient(builder.Configuration["MicroservicAddress:ApiGatewayForWeb:Uri"]), htpContextAccessor);
 });
 var app = builder.Build();
