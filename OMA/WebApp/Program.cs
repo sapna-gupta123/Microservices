@@ -1,4 +1,9 @@
+
+using RestSharp;
+
 var builder = WebApplication.CreateBuilder(args);
+
+IHttpContextAccessor htpContextAccessor = new HttpContextAccessor();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -22,6 +27,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Authentication}/{action=Login}");
 
 app.Run();
