@@ -54,13 +54,13 @@ Run the database migration script for the following services:
 - ProductService.Api
 
 You will then be able to see all databases in your MSSQL server:
-![database](OMA/WebApp/wwwroot/images/DataBase.png)
+![database](OMA/WebApp/wwwroot/images/DataBase.jpg)
 
 Now, start all projects:
 
 It's better to run all projects together. Right-click on the solution file, select properties, and then select multiple startup projects. Start all services except SharedServices project which is a class library.
 
-![services](OMA/WebApp/wwwroot/images/sevices.png)
+![services](OMA/WebApp/wwwroot/images/services.png)
 
 When you start the project, all microservices will run on different ports and you can see all projects:
 
