@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebApp.Services.ProductService.Dto;
-using WebApp.Services.ProductService;
 using WebApp.Services.CompanyService;
 using WebApp.Services.CompanyService.Dto;
+using SharedService;
+using SharedService.Dto;
 
 namespace WebApp.Controllers
 {
@@ -16,47 +16,78 @@ namespace WebApp.Controllers
         public IActionResult Index()
         {
             var categories = companyService.GetCompaniesAsync();
+            if (TempData.ContainsKey("IsSuccess"))
+            {
+                ViewData["IsSuccess"] = TempData["IsSuccess"];
+                ViewData["Message"] = TempData["Message"];
+
+            }
             return View(categories);
         }
         public IActionResult Create(Guid? id)
         {
-            var companyDto = new CompanyDto();
-
-            //var companyDto = id.HasValue
-            //    ? await productService.GetProductByIdAsync(id.Value)
-            //    : new companyDto();
+            var companyDto = id.HasValue
+                ? companyService.GetCompanyByIdAsync(id.Value)
+                : new CompanyDto();
 
             if (companyDto == null)
             {
-                return NotFound();
+                companyDto = new CompanyDto();
             }
 
-            //ViewBag.Categories = GetCategories(); // Populate dropdown
             return View(companyDto);
         }
 
         [HttpPost]
         public IActionResult Create(CompanyDto companyDto)
         {
-            if (companyDto.Id != Guid.Empty)
+            ResultDto res = null;
+            bool isSuccess = true;
+            string Message = "";
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
+                if (companyDto.Id == Guid.Empty)
                 {
-                    if (companyDto.Id == Guid.Empty)
-                    {
-                        //await productService.CreateProductAsync(companyDto);
-                    }
-                    else
-                    {
-                        //await productService.UpdateProductAsync(companyDto);
-                    }
-
-                    return RedirectToAction(nameof(Index));
+                    res = companyService.CreateCompanyAsync(companyDto);
+                }
+                else
+                {
+                    res = companyService.UpdateCompanyAsync(companyDto);
                 }
             }
+            else
+            {
+                res = new ResultDto();
+                res.IsSuccess = false;
+                res.Message = ModelState.Values.SelectMany(v => v.Errors).FirstOrDefault().ErrorMessage;
+            }
 
-            //ViewBag.Categories = GetCategories(); // Repopulate dropdown on error
-            return View(companyDto);
+            if (res != null)
+            {
+                TempData["IsSuccess"] = res.IsSuccess;
+                TempData["Message"] = res.Message;
+
+            }
+            else
+            {
+
+                TempData["IsSuccess"] = false;
+                TempData["Message"] = "Some internal error occurs";
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult Delete(string id)
+        {
+            var product = companyService.DeleteCompanyAsync(new Guid(id));
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }

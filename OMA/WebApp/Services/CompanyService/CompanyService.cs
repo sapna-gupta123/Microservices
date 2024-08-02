@@ -3,6 +3,7 @@ using SharedService;
 using SharedService.Dto;
 using System.Text.Json;
 using WebApp.Models;
+using WebApp.Services.CategoryService.Dto;
 using WebApp.Services.CompanyService.Dto;
 using WebApp.Services.ProductService.Dto;
 
@@ -26,47 +27,102 @@ namespace WebApp.Services.CompanyService
         }
         public ResultDto CreateCompanyAsync(CompanyDto companyDto)
         {
-            var request = new RestRequest($"/api/Company", Method.POST);
-            request.AddHeader("token", token);
+            var request = new RestRequest($"Company/CreateCompany", Method.POST);
+            request.AddHeader("Authorization", "Bearer " + token);
             request.AddHeader("Content-Type", "application/json");
             string serializeModel = JsonSerializer.Serialize(companyDto);
             request.AddParameter("application/json", serializeModel, ParameterType.RequestBody);
             var response = restClient.Execute(request);
-            return Utilities.GetResponseStatusCode(response);
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                PropertyNameCaseInsensitive = true
+            };
+            var res = JsonSerializer.Deserialize<ApiResponse<CompanyDto>>(response.Content, options);
+            return new ResultDto
+            {
+                IsSuccess = res.Code == 200 ? true : false,
+                Message = res.Message
+            };
+            //return Utilities.GetResponseStatusCode(response);
         }
 
         public ResultDto DeleteCompanyAsync(Guid id)
         {
-            var request = new RestRequest($"/api/Product/Company?id={id}", Method.DELETE);
-            request.AddHeader("token", token);
+            var request = new RestRequest($"Company/DeleteCompany/{id}", Method.DELETE);
+            request.AddHeader("Authorization", "Bearer " + token);
+            request.AddHeader("Content-Type", "application/json");
             IRestResponse response = restClient.Execute(request);
-            return Utilities.GetResponseStatusCode(response);
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                PropertyNameCaseInsensitive = true
+            };
+            var res = JsonSerializer.Deserialize<ApiResponse<bool>>(response.Content, options);
+            return new ResultDto
+            {
+                IsSuccess = res.Data,
+                Message = res.Message
+            };
+            
+
         }
 
-        public Task<IEnumerable<CompanyDto>> GetCompaniesAsync()
+        public IEnumerable<CompanyDto> GetCompaniesAsync()
         {
-            var request = new RestRequest($"/api/Company", Method.GET);
-            request.AddHeader("token", token);
+            var request = new RestRequest("Company/GetCompanies", Method.GET);
+            request.AddHeader("Authorization", "Bearer " + token);
+            request.AddHeader("Content-Type", "application/json");
+
             IRestResponse response = restClient.Execute(request);
-            var basket = JsonSerializer.Deserialize<Task<IEnumerable<CompanyDto>>>(response.Content);
-            return basket;
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase, // Default is camelCase, change if necessary
+                PropertyNameCaseInsensitive = true // Ignore case during deserialization
+            };
+
+            var categories = JsonSerializer.Deserialize<ApiResponse<IEnumerable<CompanyDto>>>(response.Content, options);
+            return categories.Data;
+
         }
 
-        public Task<CompanyDto> GetCompanyByIdAsync(Guid id)
+        public CompanyDto GetCompanyByIdAsync(Guid id)
         {
-            var request = new RestRequest($"/api/Company/{id}", Method.PUT);
-            request.AddHeader("token", token);
+            var request = new RestRequest($"Company/GetCompany/{id}", Method.GET);
+            request.AddHeader("Authorization", "Bearer " + token);
+            request.AddHeader("Content-Type", "application/json");
+
             IRestResponse response = restClient.Execute(request);
-            var company = JsonSerializer.Deserialize<Task<CompanyDto>>(response.Content);
-            return company;
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                PropertyNameCaseInsensitive = true
+            };
+            var company = JsonSerializer.Deserialize<ApiResponse<CompanyDto>>(response.Content, options);
+            return company.Data;
         }
 
         public ResultDto UpdateCompanyAsync(CompanyDto companyDto)
         {
-            var request = new RestRequest($"/api/Company", Method.PUT);
-            request.AddHeader("token", token);
-            IRestResponse response = restClient.Execute(request);
-            return Utilities.GetResponseStatusCode(response);
+            var request = new RestRequest($"Company/UpdateCompany/{companyDto.Id}", Method.PUT);
+            request.AddHeader("Authorization", "Bearer " + token);
+            request.AddHeader("Content-Type", "application/json");
+            string serializeModel = JsonSerializer.Serialize(companyDto);
+            request.AddParameter("application/json", serializeModel, ParameterType.RequestBody);
+            var response = restClient.Execute(request);
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                PropertyNameCaseInsensitive = true
+            };
+            var res = JsonSerializer.Deserialize<ApiResponse<bool>>(response.Content, options);
+            return new ResultDto
+            {
+                IsSuccess = res.Data,
+                Message = res.Message
+            };
         }
     }
 }

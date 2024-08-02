@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      SA_PASSWORD: "Sapna@1234"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    networks:
+      - backend
+
+  # categoryservice:
+    # image: categoryservice:latest
+    # build:
+      # context: ./CategoryService
+      # dockerfile: Dockerfile
+    # environment:
+      # - ASPNETCORE_ENVIRONMENT=Development
+      # - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=CategoryDb;User Id=sa;Password=Sapna@1234;
+    # networks:
+      # - backend
+    # depends_on:
+      # - sqlserver
+
+  productservice:
+    image: productservice:latest
+    build:
+      context: ./ProductService
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=ProductDB;User Id=sa;Password=Sapna@1234;
+    networks:
+      - backend
+    depends_on:
+      - sqlserver
+
+  # companyservice:
+    # image: companyservice:latest
+    # build:
+      # context: ./CompanyService
+      # dockerfile: Dockerfile
+    # environment:
+      # - ASPNETCORE_ENVIRONMENT=Development
+      # - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=CompanyDb;User Id=sa;Password=Sapna@1234;
+    # networks:
+      # - backend
+    # depends_on:
+      # - sqlserver
+
+  # apigateway:
+    # image: apigateway:latest
+    # build:
+      # context: ./ApiGateway
+      # dockerfile: Dockerfile
+    # environment:
+      # - ASPNETCORE_ENVIRONMENT=Development
+    # ports:
+      # - "5000:80"
+    # networks:
+      # - backend
+    # depends_on:
+      # - categoryservice
+      # - productservice
+      # - companyservice
+
+networks:
+  backend:
+    driver: bridge

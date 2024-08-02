@@ -6,24 +6,26 @@ using WebApp.Services.ProductService;
 
 var builder = WebApplication.CreateBuilder(args);
 
-IHttpContextAccessor htpContextAccessor = new HttpContextAccessor();
-
+builder.Services.AddHttpContextAccessor();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IProductService>(p =>
 {
     return new ProductService(
-        new RestClient(builder.Configuration["MicroservicAddress:ApiGatewayForWeb:Uri"]), htpContextAccessor);
+        new RestClient(builder.Configuration["MicroservicAddress:ApiAuthForProduct:Uri"]),
+        builder.Services.BuildServiceProvider().GetRequiredService<IHttpContextAccessor>());
 });
 builder.Services.AddScoped<ICompanyService>(p =>
 {
     return new CompanyService(
-        new RestClient(builder.Configuration["MicroservicAddress:ApiGatewayForWeb:Uri"]), htpContextAccessor);
+       new RestClient(builder.Configuration["MicroservicAddress:ApiAuthForCompany:Uri"]),
+        builder.Services.BuildServiceProvider().GetRequiredService<IHttpContextAccessor>());
 });
 builder.Services.AddScoped<ICategoryService>(p =>
 {
     return new CategoryService(
-        new RestClient(builder.Configuration["MicroservicAddress:ApiGatewayForWeb:Uri"]), htpContextAccessor);
+        new RestClient(builder.Configuration["MicroservicAddress:ApiAuthForCategory:Uri"]),
+        builder.Services.BuildServiceProvider().GetRequiredService<IHttpContextAccessor>());
 });
 var app = builder.Build();
 

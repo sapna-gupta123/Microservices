@@ -1,4 +1,27 @@
 ﻿@model WebApp.Services.ProductService.Dto.ProductDto
+@section scripts {
+    <script>
+        document.getElementById('ProductForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you want to save this record?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, save it!',
+                cancelButtonText: 'No, cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If confirmed, submit the form
+                    document.getElementById('ProductForm').submit();
+                }
+            });
+        });
+    </script>
+}
 
     <div class="pagetitle">
         <h1>@(Model.Id == Guid.Empty ? "Create Product" : "Edit Product")</h1>
@@ -16,56 +39,62 @@
                 <div class="card">
                     <div class="card-body">
                     <h5 class="card-title">@("Product")</h5>
-                        <form asp-action="CreateOrEdit" method="post" enctype="multipart/form-data" class="row g-3">
+                    <form id="ProductForm"  asp-action="Create" method="post" enctype="multipart/form-data" class="row g-3">
+                        <input asp-for="Id" type="hidden" class="form-control">
+
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <div class="col-12">
+
+                            <div class="col-6">
                                 <label asp-for="Name" class="form-label">Name</label>
                                 <div class="input-group has-validation">
                                     <input asp-for="Name" type="text" class="form-control" required>
                                     <span asp-validation-for="Name" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="col-12">
-                                <label asp-for="CategoryId" class="form-label">Category</label>
-                                <div class="input-group has-validation">
-                                    <select asp-for="CategoryId" asp-items="ViewBag.Categories" class="form-select" required>
-                                        <option value="">Select a category</option>
-                                    </select>
-                                    <span asp-validation-for="CategoryId" class="text-danger"></span>
-                                </div>
-                                
+                        <div class="col-6">
+                            <label asp-for="CategoryId" class="form-label">Category</label>
+                            <div class="input-group has-validation">
+                                <select asp-for="CategoryId" asp-items="ViewBag.Categories" class="form-select">
+                                    <option value="">Select a category</option>
+                                </select>
+                                <span asp-validation-for="CategoryId" class="text-danger"></span>
                             </div>
-                            <div class="col-12">
+                        </div>
+
+                            <div class="col-6">
                                 <label asp-for="Manufacturer" class="form-label">Manufacturer</label>
                                 <div class="input-group has-validation">
                                     <input asp-for="Manufacturer" type="text" class="form-control" required>
                                     <span asp-validation-for="Manufacturer" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="col-12">
+                            <div class="col-6">
                                 <label asp-for="Quantity" class="form-label">Quantity</label>
                                 <div class="input-group has-validation">
                                     <input asp-for="Quantity" type="number" class="form-control" required>
                                     <span asp-validation-for="Quantity" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="col-12">
+                            <div class="col-6">
                                 <label asp-for="Price" class="form-label">Price</label>
                                 <div class="input-group has-validation">
                                     <input asp-for="Price" type="number" step="0.01" class="form-control" required>
                                     <span asp-validation-for="Price" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="col-12">
-                                <label asp-for="ProductImage" class="form-label">File Upload</label>
-                                <div class="input-group has-validation">
-                                    <input name="productImage" type="file" class="form-control" accept=".jpg, .jpeg">
-                                </div>
-                                @if (Model.ProductImage != null)
-                                {
-                                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.ProductImage)" alt="Product Image" class="img-thumbnail mt-2" style="max-height: 200px;">
-                                }
+                        <div class="col-6">
+                            <label asp-for="ProductImageFile" class="form-label">File Upload</label>
+                            <div class="input-group has-validation">
+                                <input asp-for="ProductImageFile" type="file" class="form-control" accept=".jpg, .jpeg" />
                             </div>
+                            @if (Model.ProductImage != null && Model.ProductImage.Length > 0)
+                            {
+                                var base64String = Convert.ToBase64String(Model.ProductImage);
+                                var imgSrc = $"data:image/jpeg;base64,{base64String}";
+                                <img src="@imgSrc" alt="Product Image" class="img-thumbnail mt-2" style="max-height: 200px;" />
+                            }
+
+                        </div>
 
                             <div class="text-center">
                                 <input type="submit" value="Save" class="btn btn-primary" />

@@ -10,11 +10,12 @@ namespace ProductService.Infrastructure.Commands
 {
     public class CreateProductCommand : IRequest<Product>
     {
-        public string Name { get; set; }
-        public string CategoryName { get; set; }
-        public string Manufacturer { get; set; }
+        public string Name { get; set; } = null!;
+        public Guid CategoryId { get; set; }
+        public string? CategoryName { get; set; }
+        public string Manufacturer { get; set; } = null!;
         public int Quantity { get; set; }
         public decimal Price { get; set; }
-        public byte[] ProductImage { get; set; }
+        public byte[] ProductImage { get; set; } = null!;
     }
 }

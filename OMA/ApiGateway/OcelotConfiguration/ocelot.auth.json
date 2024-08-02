@@ -1,0 +1,11 @@
+{
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/auth-gate/{everything}",
+      "DownstreamPathTemplate": "/api/{everything}",
+      "ServiceName": "auth",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options" ],
+      "SwaggerKey": "auth"
+    }
+  ]
+}

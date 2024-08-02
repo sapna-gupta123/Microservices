@@ -25,11 +25,12 @@ namespace ProductService.Infrastructure.Handlers
             {
                 Id = Guid.NewGuid(),
                 Name = request.Name,
+                CategoryId = request.CategoryId,
                 CategoryName = request.CategoryName,
                 Manufacturer = request.Manufacturer,
                 Quantity = request.Quantity,
                 Price = request.Price,
-                ProductImage = null
+                ProductImage = request.ProductImage
             };
 
             _context.Products.Add(product);

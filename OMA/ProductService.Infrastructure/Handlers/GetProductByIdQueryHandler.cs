@@ -21,7 +21,8 @@ namespace ProductService.Infrastructure.Handlers
 
         public async Task<Product> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
         {
-            return await _context.Products.FindAsync(request.Id);
+            var e = await _context.Products.FindAsync(request.Id);
+            return e;
         }
     }
 }

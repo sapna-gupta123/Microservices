@@ -8,5 +8,6 @@ namespace WebApp.Services.CategoryService.Dto
 
         [Required]
         public string Name { get; set; } = null!;
+        public string CategoryType { get; set; } = null!;
     }
 }

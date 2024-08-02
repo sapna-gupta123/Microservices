@@ -10,6 +10,16 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CategoryService.Core\CategoryService.Core.csproj" />
+    <ProjectReference Include="..\SharedService\SharedService.csproj" />
   </ItemGroup>
 
 </Project>

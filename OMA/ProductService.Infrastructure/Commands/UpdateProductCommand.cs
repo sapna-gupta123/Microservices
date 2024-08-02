@@ -16,6 +16,6 @@ namespace ProductService.Infrastructure.Commands
         public string Manufacturer { get; set; }
         public int Quantity { get; set; }
         public decimal Price { get; set; }
-        public byte[] ProductImage { get; set; }
+        public byte[] ProductImage { get; set; } = new byte[0];
     }
 }

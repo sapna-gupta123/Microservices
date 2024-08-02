@@ -1,21 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SharedService
 
 {
     public static class TokenManagerService
     {
-
-
-
         public static string CreateToken(Dictionary<string, object> keyValues)
         {
 
@@ -43,18 +35,19 @@ namespace SharedService
             return tokenString;
 
         }
-
-
-
-        public static UserLoginInfo GetUserInfo(HttpContextAccessor _httpContextAccessor)
+        public static UserLoginInfo GetUserInfo(HttpContext _httpContextAccessor)
         {
 
             var response = new UserLoginInfo();
             try
             {
-                var token = _httpContextAccessor.HttpContext.Request.Headers["token"].ToString();
+                var token = _httpContextAccessor.Request.Headers["Authorization"].ToString();
                 if (token == "")
                     return response;
+                else
+                {
+                    token = token.Split(' ')[1].ToString();
+                }
 
                 string decryptedtoken = EncryptionHelper.Decrypt(token);
                 token = decryptedtoken;
@@ -107,16 +100,11 @@ namespace SharedService
 
             return response;
         }
-
-
         public static UserLoginInfo GetCurrentUser(HttpRequest request)
         {
             var Authcookie = request.Cookies["Auth"];
             return TokenManagerService.GetUserInfo(Authcookie);
         }
-
-
-
     }
     public class UserLoginInfo
     {

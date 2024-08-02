@@ -31,7 +31,7 @@ namespace WebApp.Controllers
         public IActionResult Login(LoginDTO model)
         {
             var restClient = new RestClient();
-            var request = new RestRequest(_configuration["MicroservicAddress:ApiGatewayForWeb:Uri"] + "Auth/Login", Method.POST);
+            var request = new RestRequest(_configuration["MicroservicAddress:ApiAuthForWeb:Uri"] + "Auth/Login", Method.POST);
             request.AddHeader("Content-Type", "application/json");
             string serializeModel = JsonSerializer.Serialize(model);
             request.AddParameter("application/json", serializeModel, ParameterType.RequestBody);

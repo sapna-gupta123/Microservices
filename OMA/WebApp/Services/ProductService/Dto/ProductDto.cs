@@ -12,8 +12,7 @@ namespace WebApp.Services.ProductService.Dto
         [Required]
         public Guid CategoryId { get; set; }
 
-        [Required]
-        public string CategoryName { get; set; } = null!;
+        public string? CategoryName { get; set; }
 
         [Required]
         public string Manufacturer { get; set; } = null!;
@@ -24,6 +23,8 @@ namespace WebApp.Services.ProductService.Dto
         [Required]
         public decimal Price { get; set; }
 
+        [Required]
+        public IFormFile? ProductImageFile { get; set; }
         public byte[]? ProductImage { get; set; }
     }
 }
