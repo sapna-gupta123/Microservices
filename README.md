@@ -1,7 +1,5 @@
 ## **Project Overview**
 
-![Project Overview](OMA/WebApp/wwwroot/images/OMA_Service_System_Design.png)
-
 This project is structured to develop a set of microservices using **.NET Core 7.0** for a **Category, Product, and Company management system**. The architecture includes an **API Gateway** for routing and security, and a **user interface using ASP.NET Core**. Each microservice will implement **CRUD operations**, **JWT tokenization** for authentication and authorization, use **ORM** for database communication, and follow specific design patterns.
 
 ### **Components**
@@ -35,6 +33,17 @@ This project is structured to develop a set of microservices using **.NET Core 7
 8. **Exception Handling**: Implemented.
 
 ## **MicroService: Product**
+
+### **Features**
+
+1. **CRUD Operations**: Create, Read, Update, Delete products.
+2. **Models**: GUID, Product Name, Product Category Name, Manufacturer, Quantity, Price, Product Images (JPEG only).
+3. **Authorization and Authentication**: JWT Tokenization.
+4. **Database Communication**: ORM and stored procedures.
+5. **Design Pattern**: CQRS (Command Query Responsibility Segregation).
+6. **Product Types**: Electronics, Home Appliances, Clothes, etc.
+7. **Swagger UI**: Disabled to ensure security without Gateway Routing.
+8. **Exception Handling**: Implemented.
 
 ### **Features**
 
@@ -82,9 +91,52 @@ This project is structured to develop a set of microservices using **.NET Core 7
 - **Docker** (for containerization)
 - **MsSQL** or any other preferred database
 
+### **Project System Design **
+![System Design] (OMA/WebApp/wwwroot/images/OMA_Service_System_Design.png)
+
+### **How Run Project **
+For run this project we need some service , there is SQL Server 
+
+
+Install MSSQL on Docker:
+
+docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=Sapna@1234" -e "MSSQL_PID=Express" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
+
+If you already have SQL server on your PC, then you need to update your connection string in each microservice project.
+
+
+Once you update the DB connection string in the appsettings.json for each project, you have to run the DB migration script to run your application.
+
+
+Set AuthService as the startup project and then open the package manager console window. Run the Update-Database command:
+
+![update database] (OMA/WebApp/wwwroot/images/Update-Database.png)
+![update database2] (OMA/WebApp/wwwroot/images/Update-Database2.png)
+
+Run the database migration script for the following services:
+
+- CategoryService.Api
+- CompanyService.Api
+- ProductService.Api
+
+You will then be able to see all databases in your MSSQL server:
+![database](OMA/WebApp/wwwroot/images/DataBase.png)
+
+Now, start all projects:
+
+It's better to run all projects together. Right-click on the solution file, select properties, and then select multiple startup projects. Start all services except SharedServices project which is a class library.
+
+![services](OMA/WebApp/wwwroot/images/sevices.png)
+
+When you start the project, all microservices will run on different ports and you can see all projects:
+
+![Swagger](OMA/WebApp/wwwroot/images/swagger.png)
+
+
 ### **Installation**
 
 1. **Clone the Repository**
    ```sh
-   git clone https://github.com/your-repo/project.git
+   git clone https://github.com/sapna-gupta123/Microservices.git
    cd project
+
