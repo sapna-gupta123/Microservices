@@ -29,8 +29,14 @@ This project is structured to develop a set of microservices using **.NET Core 7
 ![System Design](OMA/WebApp/wwwroot/images/OMA_Service_System_Design.png)
 
 ### **How Run Project **
-For run this project we need some service , there is SQL Server 
 
+1. **Clone the Repository**
+   ```sh
+   git clone https://github.com/sapna-gupta123/Microservices.git
+   cd project
+
+
+For run this project we need some service , there is SQL Server 
 
 Install MSSQL on Docker:
 
@@ -47,8 +53,9 @@ Set AuthService as the startup project and then open the package manager console
 ![update database](OMA/WebApp/wwwroot/images/Update-Database.png)
 ![update database2](OMA/WebApp/wwwroot/images/Update-Database2.png)
 
-Run the database migration script for the following services:
+Run the database migration script for the following services also:
 
+- AuthServices
 - CategoryService.Api
 - CompanyService.Api
 - ProductService.Api
@@ -87,12 +94,4 @@ When you start the project, all microservices will run on different ports and yo
 
 ![Swagger](OMA/WebApp/wwwroot/images/delete.png)
 ![Swagger](OMA/WebApp/wwwroot/images/delete1.png)
-
-
-### **Installation**
-
-1. **Clone the Repository**
-   ```sh
-   git clone https://github.com/sapna-gupta123/Microservices.git
-   cd project
 
