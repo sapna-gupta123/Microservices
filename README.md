@@ -75,6 +75,11 @@ When you start the project, all microservices will run on different ports and yo
 
 ### **Working Code **
 
+Default configuration for Web Login
+Email - admin@admin.com
+password - admin
+
+
 ![Swagger](OMA/WebApp/wwwroot/images/LoginPage.png)
 
 ![Swagger](OMA/WebApp/wwwroot/images/AddCompany.png)
