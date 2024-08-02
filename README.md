@@ -4,8 +4,6 @@ This project is structured to develop a set of microservices using **.NET Core 7
 
 ### **Components**
 
-![Components](./images/components.png)
-
 - **Gateway**
   - **ApiGateway**: Handles routing and security.
 
@@ -92,7 +90,7 @@ This project is structured to develop a set of microservices using **.NET Core 7
 - **MsSQL** or any other preferred database
 
 ### **Project System Design **
-![System Design] (OMA/WebApp/wwwroot/images/OMA_Service_System_Design.png)
+![System Design](OMA/WebApp/wwwroot/images/OMA_Service_System_Design.png)
 
 ### **How Run Project **
 For run this project we need some service , there is SQL Server 
@@ -110,8 +108,8 @@ Once you update the DB connection string in the appsettings.json for each projec
 
 Set AuthService as the startup project and then open the package manager console window. Run the Update-Database command:
 
-![update database] (OMA/WebApp/wwwroot/images/Update-Database.png)
-![update database2] (OMA/WebApp/wwwroot/images/Update-Database2.png)
+![update database](OMA/WebApp/wwwroot/images/Update-Database.png)
+![update database2](OMA/WebApp/wwwroot/images/Update-Database2.png)
 
 Run the database migration script for the following services:
 
