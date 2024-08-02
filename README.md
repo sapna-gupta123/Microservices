@@ -1,6 +1,6 @@
 ## **Project Overview**
 
-![Project Overview](./images/OMA_Service_System_Design.png)
+![Project Overview](OMA/WebApp/wwwroot/images/OMA_Service_System_Design.png)
 
 This project is structured to develop a set of microservices using **.NET Core 7.0** for a **Category, Product, and Company management system**. The architecture includes an **API Gateway** for routing and security, and a **user interface using ASP.NET Core**. Each microservice will implement **CRUD operations**, **JWT tokenization** for authentication and authorization, use **ORM** for database communication, and follow specific design patterns.
 
