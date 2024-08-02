@@ -18,7 +18,7 @@ namespace WebApp.Controllers
         public IActionResult Logout()
         {
             Response.Cookies.Delete("Auth");
-            return RedirectToAction("Index", "Home", "");
+            return RedirectToAction("Login");
 
         }
 
